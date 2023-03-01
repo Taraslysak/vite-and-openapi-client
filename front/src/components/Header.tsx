@@ -4,6 +4,7 @@ type HeaderProps = { onLogout: () => void };
 
 export function Header({ onLogout }: HeaderProps) {
   const handleLogout = () => {
+    localStorage.removeItem(process.env.REACT_APP_API_TOKEN_KEY!);
     onLogout();
   };
   return (

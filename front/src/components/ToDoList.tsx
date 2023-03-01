@@ -1,18 +1,32 @@
-import { Box, Paper } from "@mui/material";
+import { Box } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useState } from "react";
+import { useQuery } from "react-query";
 import AddTodo from "./AddTodo";
 import ToDoItem from "./ToDoItem";
 
 export function ToDoList() {
-  const [todos, setTodos] = useState(["1", "2", "3"]);
+  const { data } = useQuery<string[]>(
+    "todos",
+    async () => {
+      const res = await fetch("todos", {
+        headers: {
+          Authorization: `bearer ${localStorage.getItem(
+            process.env.REACT_APP_API_TOKEN_KEY!
+          )}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data;
+      }
+    },
+    { initialData: [] }
+  );
   return (
     <Box padding={2}>
       <AddTodo />
       <Stack>
-        {todos.map((todo) => (
-          <ToDoItem id={todo} key={todo} />
-        ))}
+        {data && data.map((todo) => <ToDoItem id={todo} key={todo} />)}
       </Stack>
     </Box>
   );

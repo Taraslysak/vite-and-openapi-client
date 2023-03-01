@@ -15,7 +15,7 @@ todo_router = APIRouter(prefix="/todos", dependencies=[Depends(validate_token)])
 db_file_path = os.path.join(os.path.dirname(__file__), "db.json")
 
 
-@todo_router.get("/")
+@todo_router.get("")
 def get_all_todos() -> list[str]:
     with open(db_file_path, "r") as file:
         db_json = json.load(file)
@@ -37,7 +37,7 @@ def get_todo_details(id: str):
 @todo_router.post("/")
 def add_todo(todo: ToDoIn):
     with open(db_file_path, "r+") as file:
-        new_todo = ToDoOut(**todo.dict(), id=uuid4())
+        new_todo = ToDoOut(**todo.dict(), id=str(uuid4()))
         db_json = json.load(file)
         all_todos = AllToDos.parse_obj(db_json)
         all_todos.todos[str(new_todo.id)] = new_todo
