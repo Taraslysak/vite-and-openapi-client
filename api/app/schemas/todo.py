@@ -1,5 +1,4 @@
 from pydantic import BaseModel
-from uuid import UUID
 
 
 class ToDoIn(BaseModel):
@@ -8,7 +7,7 @@ class ToDoIn(BaseModel):
 
 
 class ToDoOut(ToDoIn):
-    id: UUID
+    id: str
 
 
 class AllToDos(BaseModel):
