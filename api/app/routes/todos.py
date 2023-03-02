@@ -10,7 +10,9 @@ from app.schemas import ToDoOut, ToDoIn, AllToDos
 from app.utils import check_if_to_exists, update_bd_file
 
 
-todo_router = APIRouter(prefix="/todos", dependencies=[Depends(validate_token)])
+todo_router = APIRouter(
+    prefix="/todos", dependencies=[Depends(validate_token)], tags=["todo"]
+)
 
 db_file_path = os.path.join(os.path.dirname(__file__), "db.json")
 

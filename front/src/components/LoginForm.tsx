@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useMutation } from "react-query";
+import { AuthService } from "../client";
 
 type LoginFormProps = {
   onLogin: () => void;
@@ -21,24 +22,11 @@ export function LoginForm({ onLogin }: LoginFormProps) {
 
   const { mutate, isLoading, error } = useMutation(
     async () => {
-      const params = new URLSearchParams();
-      params.append("grant_type", "");
-      params.append("username", userName);
-      params.append("password", password);
-      params.append("scope", "");
-      params.append("client_id", "");
-      params.append("client_secret", "");
-      const res = await fetch("auth/login", { method: "POST", body: params });
-
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      }
-
-      if (res.status < 500) {
-        throw new Error("Wrong credentials");
-      }
-      throw new Error("Internal server error");
+      const data = await AuthService.authLogin({
+        username: userName,
+        password,
+      });
+      return data;
     },
     {
       onSuccess: (data) => {

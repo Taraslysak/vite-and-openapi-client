@@ -6,10 +6,10 @@ from app.dependencies import validate_token
 from app.schemas import Token
 
 
-auth_router = APIRouter(prefix="/auth")
+auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@auth_router.post("/login")
+@auth_router.post("/login", response_model=Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
     if form_data.username != USERNAME and form_data.password != SUPER_SECRET_PASSWORD:
         raise HTTPException(

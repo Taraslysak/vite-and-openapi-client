@@ -29,7 +29,8 @@
     "start": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "test": "jest"
+    "test": "jest",
+    "get-client": "openapi --input http://localhost:8000/openapi.json --output ./src/client --client axios"
   },
   "proxy": "http://127.0.0.1:8000",
   "eslintConfig": {
@@ -61,6 +62,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.18.6"
+    "@babel/preset-react": "^7.18.6",
+    "openapi-typescript-codegen": "^0.23.0"
   }
 }
