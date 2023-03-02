@@ -15,7 +15,7 @@ export default function AddTodo() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${localStorage.getItem(
-            process.env.REACT_APP_API_TOKEN_KEY!
+            import.meta.env.VITE_API_TOKEN_KEY!
           )}`,
         },
       });

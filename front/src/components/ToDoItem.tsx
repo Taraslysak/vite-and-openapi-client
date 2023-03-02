@@ -35,7 +35,7 @@ export default function ToDoItem({ id }: ToDoItemProps) {
       const res = await fetch(`todos/${id}`, {
         headers: {
           Authorization: `bearer ${localStorage.getItem(
-            process.env.REACT_APP_API_TOKEN_KEY!
+            import.meta.env.VITE_API_TOKEN_KEY!
           )}`,
         },
       });
@@ -60,7 +60,7 @@ export default function ToDoItem({ id }: ToDoItemProps) {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${localStorage.getItem(
-            process.env.REACT_APP_API_TOKEN_KEY!
+            import.meta.env.VITE_API_TOKEN_KEY!
           )}`,
         },
       });
@@ -83,7 +83,7 @@ export default function ToDoItem({ id }: ToDoItemProps) {
         method: "DELETE",
         headers: {
           Authorization: `bearer ${localStorage.getItem(
-            process.env.REACT_APP_API_TOKEN_KEY!
+            import.meta.env.VITE_API_TOKEN_KEY!
           )}`,
         },
       });

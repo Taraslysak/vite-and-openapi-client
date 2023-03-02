@@ -43,7 +43,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
     {
       onSuccess: (data) => {
         localStorage.setItem(
-          process.env.REACT_APP_API_TOKEN_KEY!,
+          import.meta.env.VITE_API_TOKEN_KEY!,
           data.access_token
         );
         onLogin();

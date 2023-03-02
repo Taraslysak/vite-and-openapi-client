@@ -7,7 +7,7 @@ import { ToDoList } from "./components/ToDoList";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
-    !!localStorage.getItem(process.env.REACT_APP_API_TOKEN_KEY!)
+    !!localStorage.getItem(import.meta.env.VITE_API_TOKEN_KEY!)
   );
 
   const onLogin = () => setIsLoggedIn(true);
