@@ -1,24 +1,16 @@
 import { Box } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useQuery } from "react-query";
+import { TodoService } from "../client";
 import AddTodo from "./AddTodo";
 import ToDoItem from "./ToDoItem";
 
 export function ToDoList() {
-  const { data } = useQuery<string[]>(
+  const { data } = useQuery(
     "todos",
     async () => {
-      const res = await fetch("todos", {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem(
-            process.env.REACT_APP_API_TOKEN_KEY!
-          )}`,
-        },
-      });
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      }
+      const res = await TodoService.todoGetAllTodos();
+      return res;
     },
     { initialData: [] }
   );

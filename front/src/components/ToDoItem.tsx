@@ -13,14 +13,9 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { ToDoOut, TodoService } from "../client";
 
 type ToDoItemProps = { id: string };
-
-type TodoDetails = {
-  details: string;
-  id: string;
-  done: boolean;
-};
 
 export default function ToDoItem({ id }: ToDoItemProps) {
   const [value, setValue] = useState("");
@@ -29,21 +24,11 @@ export default function ToDoItem({ id }: ToDoItemProps) {
 
   const queryClient = useQueryClient();
 
-  const { data } = useQuery<TodoDetails>(
+  const { data } = useQuery(
     ["todo", id],
     async ({ queryKey: [_, id] }) => {
-      const res = await fetch(`todos/${id}`, {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem(
-            process.env.REACT_APP_API_TOKEN_KEY!
-          )}`,
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        return data;
-      }
+      const res = await TodoService.todoGetTodoDetails(id);
+      return res;
     },
     {
       onSuccess: (data) => {
@@ -53,21 +38,8 @@ export default function ToDoItem({ id }: ToDoItemProps) {
   );
 
   const updateMutation = useMutation(
-    async (params: TodoDetails) => {
-      const res = await fetch(`todos/${id}`, {
-        method: "PUT",
-        body: JSON.stringify(params),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${localStorage.getItem(
-            process.env.REACT_APP_API_TOKEN_KEY!
-          )}`,
-        },
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        console.log({ err });
-      }
+    async (params: ToDoOut) => {
+      await TodoService.todoUpdateTodo(params.id, params);
     },
     {
       onSuccess: () => {
@@ -79,18 +51,7 @@ export default function ToDoItem({ id }: ToDoItemProps) {
 
   const deleteMutation = useMutation(
     async () => {
-      const res = await fetch(`todos/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `bearer ${localStorage.getItem(
-            process.env.REACT_APP_API_TOKEN_KEY!
-          )}`,
-        },
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        console.log({ err });
-      }
+      await TodoService.todoDeleteTodo(id);
     },
     {
       onSuccess: () => {

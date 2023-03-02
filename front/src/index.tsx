@@ -6,6 +6,10 @@ import reportWebVitals from "./reportWebVitals";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "./utils/queryClient";
 
+import { OpenAPI } from "./client/core/OpenAPI";
+
+OpenAPI.TOKEN = localStorage.getItem(import.meta.env.VITE_API_TOKEN_KEY!) ?? "";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

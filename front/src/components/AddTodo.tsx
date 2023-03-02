@@ -2,6 +2,7 @@ import { FormGroup, IconButton, TextField } from "@mui/material";
 import { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useMutation, useQueryClient } from "react-query";
+import { TodoService } from "../client";
 
 export default function AddTodo() {
   const [details, setDetails] = useState("");
@@ -9,16 +10,7 @@ export default function AddTodo() {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
     async () => {
-      await fetch(`todos/`, {
-        method: "POST",
-        body: JSON.stringify({ details, done: false }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${localStorage.getItem(
-            process.env.REACT_APP_API_TOKEN_KEY!
-          )}`,
-        },
-      });
+      await TodoService.todoAddTodo({ details, done: false });
     },
     {
       onSuccess: () => {

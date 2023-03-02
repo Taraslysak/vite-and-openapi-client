@@ -10,7 +10,9 @@ from app.schemas import ToDoOut, ToDoIn, AllToDos
 from app.utils import check_if_to_exists, update_bd_file
 
 
-todo_router = APIRouter(prefix="/todos", dependencies=[Depends(validate_token)])
+todo_router = APIRouter(
+    prefix="/todos", dependencies=[Depends(validate_token)], tags=["todo"]
+)
 
 db_file_path = os.path.join(os.path.dirname(__file__), "db.json")
 
@@ -24,7 +26,7 @@ def get_all_todos() -> list[str]:
         return idx
 
 
-@todo_router.get("/{id}")
+@todo_router.get("/{id}", response_model=ToDoOut)
 def get_todo_details(id: str):
     with open(db_file_path, "r") as file:
         db_json = json.load(file)
@@ -34,7 +36,7 @@ def get_todo_details(id: str):
         return todo
 
 
-@todo_router.post("/")
+@todo_router.post("/", response_model=ToDoOut)
 def add_todo(todo: ToDoIn):
     with open(db_file_path, "r+") as file:
         new_todo = ToDoOut(**todo.dict(), id=str(uuid4()))
@@ -45,7 +47,7 @@ def add_todo(todo: ToDoIn):
         return new_todo
 
 
-@todo_router.put("/{id}")
+@todo_router.put("/{id}", response_model=ToDoOut)
 def update_todo(id: str, todo: ToDoOut):
     with open(db_file_path, "r+") as file:
         db_json = json.load(file)
